@@ -1,12 +1,11 @@
 import { useState } from "react";
 import data from "../data.json";
+import { Link } from "react-router-dom";
 export default function Vans() {
   const [color, setColor] = useState("");
   const [displayVans, setDisplayvans] = useState(data.vans);
   function handleClick(event) {
-    const vans = data.vans.filter(
-      (items) => event.target.value === items.style,
-    );
+    const vans = data.vans.filter((items) => event.target.value === items.type);
     setColor(event.target.value);
     setDisplayvans(vans);
   }
@@ -54,21 +53,23 @@ export default function Vans() {
       <div className="grid md:grid-cols-3 gap-8 place-items-center pb-8 lg:grid-cols-4">
         {displayVans.map((item) => {
           return (
-            <div key={item.name} className="max-w-60 w-57.5 ">
-              <img src={item.imageUrl} alt="vans" />
-              <div className="flex justify-between">
-                <h1 className="font-semibold text-[20px]">{item.name}</h1>
-                <p className="text-[20px] font-semibold">{item.price}</p>
+            <Link key={item.id} to={`/vans/${item.id}`}>
+              <div className="max-w-60 w-57.5 ">
+                <img src={item.imageUrl} alt="vans" />
+                <div className="flex justify-between">
+                  <h1 className="font-semibold text-[20px]">{item.name}</h1>
+                  <p className="text-[20px] font-semibold">{item.price}</p>
+                </div>
+                <div className="flex  justify-between">
+                  <button
+                    className={`mt-3 ${item.type === "Simple" ? "bg-[#E17654]" : item.type === "Rugged" ? "bg-[#115E59]" : "bg-[#161616]"} px-4 py-1 rounded-[5px] text-[#FFEAD0]`}
+                  >
+                    {item.type}
+                  </button>
+                  <span className="text-[14px] -mt-1.5">/day</span>
+                </div>
               </div>
-              <div className="flex  justify-between">
-                <button
-                  className={`mt-3 ${item.style === "Simple" ? "bg-[#E17654]" : item.style === "Rugged" ? "bg-[#115E59]" : "bg-[#161616]"} px-4 py-1 rounded-[5px] text-[#FFEAD0]`}
-                >
-                  {item.style}
-                </button>
-                <span className="text-[14px] -mt-1.5">/day</span>
-              </div>
-            </div>
+            </Link>
           );
         })}
       </div>
